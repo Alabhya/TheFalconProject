@@ -46,6 +46,16 @@ namespace UnityStandardAssets.Vehicles.Car
         private Rigidbody m_Rigidbody;
 
 
+        public void SetCautionSpeedFactor(float factor)
+        {
+            m_CautiousSpeedFactor = factor;
+        }
+
+        public void SetAccelerationSensitivity(float factor)
+        {
+            m_AccelSensitivity = factor;
+        }
+
         private void Awake()
         {
             // get the car controller reference

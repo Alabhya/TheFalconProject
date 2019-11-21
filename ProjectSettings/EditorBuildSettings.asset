@@ -4,5 +4,11 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/LaunchScreen.unity
+    guid: 62c8c54cbeef7f54784f2382ecbe38ec
+  - enabled: 1
+    path: Assets/Asset/Scenes/Drift Track.unity
+    guid: e82a0c7cf6aa6504daa551b17979d57e
   m_configObjects: {}
