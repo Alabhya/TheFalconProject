@@ -1,102 +1,110 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
+using TMPro;
+using System;
 public class Lap_Manager : MonoBehaviour
 {
     int lap = 1;
-    public int lapCount = 7;
+    int lapCount = 7;
     float currentLapTime = 0.0f;
     float lastLapTime = 0.0f;
     float bestLapTime = 0.0f;
     bool raceStart = false;
+    bool raceEnd = false;
 
     public static int MinuteCount;
     public static int SecondCount;
     public static float MilliCount;
     public static string MilliDisplay;
 
-    public GameObject MinuteBox;
-    public GameObject SecondBox;
-    public GameObject MilliBox;
+    public GameObject current_lap_obj;
+    public GameObject last_lap_obj;
+    public GameObject best_lap_obj;
+    public GameObject lap_count_obj;
+    public GameObject ExitPanel;
+    TextMeshProUGUI current_lap_txt;
+    TextMeshProUGUI last_lap_txt;
+    TextMeshProUGUI best_lap_txt;
+    TextMeshProUGUI lap_count_txt;
 
+    TimeSpan span;
 
     void Start()
     {
         lastLapTime = 0;
         bestLapTime = 0;
+
+        current_lap_txt = current_lap_obj.GetComponent<TextMeshProUGUI>();
+        last_lap_txt = last_lap_obj.GetComponent<TextMeshProUGUI>();
+        best_lap_txt = best_lap_obj.GetComponent<TextMeshProUGUI>();
+        lap_count_txt = lap_count_obj.GetComponent<TextMeshProUGUI>();
+        
     }
 
- 
+
     void OnTriggerEnter(Collider col)
     {
-            if (col.gameObject.tag == "car_front" && raceStart == false)
-            {
-                raceStart = true;
-                lastLapTime = 0;
-                bestLapTime = 0;
-
-         //   Debug.Log("First update");
+       
+        if (col.gameObject.tag == "car_front" && raceStart == false)
+        {
+            raceStart = true;
+            lastLapTime = 0;
+            bestLapTime = 0;
+            lap_count_txt.text = lap + "/" + lapCount;
+            Debug.Log("First update");
             return;
-            }
-            else if (col.gameObject.tag == "car_front" && lap <= lapCount)
-            {
-                lap++;
-                lastLapTime = currentLapTime;
-                if (lastLapTime <= bestLapTime || bestLapTime == 0)
-                {
-                    bestLapTime = lastLapTime;
-                }
-
-                currentLapTime = 0.0f;
-           // Debug.Log("Second  update");
         }
+        else if (col.gameObject.tag == "car_front" && lap <= lapCount)
+        {
+            lastLapTime = currentLapTime;
+            if (lastLapTime <= bestLapTime || bestLapTime == 0)
+            {
+                bestLapTime = lastLapTime;
+            }
+
+            currentLapTime = 0.0f;
+            span = TimeSpan.FromSeconds(currentLapTime);
+            current_lap_txt.text = span.ToString(@"mm\:ss\.fff");
+            span = TimeSpan.FromSeconds(bestLapTime);
+            best_lap_txt.text = span.ToString(@"mm\:ss\.fff");
+            span = TimeSpan.FromSeconds(lastLapTime);
+            last_lap_txt.text = span.ToString(@"mm\:ss\.fff");
+
+            lap_count_txt.text = lap + "/" + lapCount;
+            lap++;
+
+            // Debug.Log("Second  update");
+        }
+        
+        if (lap > lapCount)
+        {
+            raceEnd = true;
+            raceStart = false;
+        }
+        
     }
+
+
+
 
     void Update()
     {
-        if (raceStart == true)
+        Debug.Log(raceEnd);
+        if (raceStart)
         {
             currentLapTime += Time.deltaTime;
-            MilliCount += currentLapTime * 10;
-            MilliDisplay = MilliCount.ToString("F0");
-            // MilliBox.GetComponent<Text>().text = "" + MilliDisplay;
 
-            if (MilliCount >= 10)
-            {
-                MilliCount = 0;
-                SecondCount += 1;
-            }
-
-            if (SecondCount <= 9)
-            {
-                // SecondBox.GetComponent<Text>().text = "0" + SecondCount + ".";
-            }
-            else
-            {
-                //SecondBox.GetComponent<Text>().text = "" + SecondCount + ".";
-            }
-
-            if (SecondCount >= 60)
-            {
-                SecondCount = 0;
-                MinuteCount += 1;
-            }
-
-            if (MinuteCount <= 9)
-            {
-                //MinuteBox.GetComponent<Text>().text = "0" + MinuteCount + ":";
-            }
-            else
-            {
-                // MinuteBox.GetComponent<Text>().text = "" + MinuteCount + ":";
-            }
-
-
-            Debug.Log("Current Lap Time:" + currentLapTime);
-            Debug.Log("Last Lap Time:" + lastLapTime);
-            Debug.Log("Best Lap Time:" + bestLapTime);
+            span = TimeSpan.FromSeconds(currentLapTime);
+            current_lap_txt.text = span.ToString(@"mm\:ss\.fff");
         }
+        if (raceEnd)
+        {
+            Time.timeScale = 0;
+            ExitPanel.SetActive(true);
+        }
+       
     }
 
   

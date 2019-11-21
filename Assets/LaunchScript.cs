@@ -16,7 +16,7 @@ public class LaunchScript : MonoBehaviour
 
     public void LoadGame(string SceneName)
     {
-        SceneManager.LoadScene(SceneName);
+        SceneManager.LoadScene("Drift Track");
     }
     // Update is called once per frame
     void Update()
