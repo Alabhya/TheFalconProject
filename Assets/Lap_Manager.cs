@@ -6,7 +6,7 @@ using TMPro;
 using System;
 public class Lap_Manager : MonoBehaviour
 {
-    int lap = 1;
+    int lap = 0;
     int lapCount = 7;
     float currentLapTime = 0.0f;
     float lastLapTime = 0.0f;
@@ -50,6 +50,7 @@ public class Lap_Manager : MonoBehaviour
         if (col.gameObject.tag == "car_front" && raceStart == false)
         {
             raceStart = true;
+            lap++;
             lastLapTime = 0;
             bestLapTime = 0;
             lap_count_txt.text = lap + "/" + lapCount;
