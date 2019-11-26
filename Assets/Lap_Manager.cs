@@ -72,10 +72,8 @@ public class Lap_Manager : MonoBehaviour
             best_lap_txt.text = span.ToString(@"mm\:ss\.fff");
             span = TimeSpan.FromSeconds(lastLapTime);
             last_lap_txt.text = span.ToString(@"mm\:ss\.fff");
-
-            lap_count_txt.text = lap + "/" + lapCount;
             lap++;
-
+            lap_count_txt.text = lap + "/" + lapCount;
             // Debug.Log("Second  update");
         }
         
